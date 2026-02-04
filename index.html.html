@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIU Law Legacy - Final Portal 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #002147; --accent: #ffd700; --bg: #f0f4f8; --white: #ffffff; }
+        body { margin: 0; font-family: 'Hind Siliguri', sans-serif; background: var(--bg); color: #333; scroll-behavior: smooth; }
+        
+        /* Navigation */
+        nav { background: var(--primary); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; color: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.2); }
+        .logo { font-size: 1.6rem; font-weight: bold; color: var(--accent); letter-spacing: 1px; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Hero Section (Feature 1: Smart Search) */
+        .hero { background: linear-gradient(rgba(0,33,71,0.85), rgba(0,33,71,0.85)), url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200'); background-size: cover; background-position: center; padding: 120px 20px; text-align: center; color: white; }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
+        .search-box { background: white; padding: 8px; border-radius: 50px; display: inline-flex; width: 90%; max-width: 700px; margin-top: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        .search-box input { border: none; padding: 15px 25px; flex: 1; border-radius: 50px; outline: none; font-size: 1.1rem; color: #333; }
+        .search-btn { background: var(--primary); color: white; border: none; padding: 10px 35px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        
+        /* Headers */
+        h2.section-head { border-left: 6px solid var(--primary); padding-left: 15px; margin-bottom: 40px; color: var(--primary); font-size: 2rem; }
+
+        /* Cards */
+        .card { background: var(--white); padding: 30px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); transition: 0.4s; position: relative; border-top: 5px solid var(--accent); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.12); }
+        .card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
+        .card h3 { margin: 10px 0; color: var(--primary); font-size: 1.4rem; }
+        .card p { color: #555; line-height: 1.6; font-size: 0.95rem; }
+
+        /* Feature specific */
+        .verified-badge { background: #27ae60; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 50px; display: inline-block; margin-bottom: 12px; }
+        .memory-img { width: 100%; height: 220px; object-fit: cover; border-radius: 12px; margin: 15px 0; border: 2px solid #eee; }
+        .pro-badge { background: #8e44ad; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
+
+        /* Footer */
+        footer { background: #000c1a; color: white; text-align: center; padding: 60px 20px; margin-top: 80px; border-top: 4px solid var(--accent); }
+        .footer-credits { opacity: 0.8; font-size: 0.9rem; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SIU LAW LEGACY</div>
+        <div class="nav-links">
+            <a href="#directory">ডিরেক্টরি</a>
+            <a href="#career">ক্যারিয়ার</a>
+            <a href="#memory">স্মৃতি</a>
+            <a href="#register">রেজিস্ট্রেশন</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1>ঐতিহ্যের ২২ বছর: ডিজিটাল মাইলফলক</h1>
+        <p>আইন বিভাগ, সিলেট ইন্টারন্যাশনাল ইউনিভার্সিটি (১-৪৪ ব্যাচ)</p>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="নাম, ব্যাচ বা জেলা বার লিখে সার্চ করুন...">
+            <button class="search-btn" onclick="searchFunction()">খুঁজুন</button>
+        </div>
+    </section>
+
+    <div class="container">
+        
+        <h2 class="section-head" id="directory">১. স্মার্ট ডিরেক্টরি (সদস্যবৃন্দ)</h2>
+        <div class="grid-3" id="lawyerGrid">
+            <div class="card lawyer-card">
+                <span class="verified-badge">VERIFIED</span>
+                <h3>Advocate Anupam Gope</h3>
+                <p><strong>ব্যাচ:</strong> ১০ম | Senior Lecturer, SIU</p>
+                <p><i class="fas fa-university"></i> সিলেট জেলা জজ কোর্ট</p>
+            </div>
+            <div class="card lawyer-card">
+                <span class="verified-badge">VERIFIED</span>
+                <h3>Advocate Samiur Rashid</h3>
+                <p><strong>ব্যাচ:</strong> ৮ম | Assistant Professor, SIU</p>
+                <p><i class="fas fa-university"></i> সিলেট জেলা জজ কোর্ট</p>
+            </div>
+            <div class="card lawyer-card">
+                <span class="verified-badge">VERIFIED</span>
+                <h3>মোহাম্মদ আরিফ</h3>
+                <p><strong>ব্যাচ:</strong> ৩৯তম | Advocate</p>
+                <p><i class="fas fa-university"></i> সিলেট জেলা জজ কোর্ট</p>
+            </div>
+            <div class="card lawyer-card">
+                <span class="verified-badge">VERIFIED</span>
+                <h3>অ্যাডভোকেট আকিব ফয়সাল</h3>
+                <p><strong>ব্যাচ:</strong> ৩৯তম | Advocate</p>
+                <p><i class="fas fa-university"></i> সিলেট জেলা জজ কোর্ট</p>
+            </div>
+            <div class="card lawyer-card">
+                <span class="verified-badge">VERIFIED</span>
+                <h3>ব্যারিস্টার ফারহান আহমেদ</h3>
+                <p><strong>ব্যাচ:</strong> ৫মহ | সুপ্রিম কোর্ট বাংলাদেশ</p>
+            </div>
+            <div class="card lawyer-card">
+                <span class="verified-badge" style="background:#e67e22;">PENDING</span>
+                <h3>অ্যাডভোকেট আরিয়ান হাসান</h3>
+                <p><strong>ব্যাচ:</strong> ১০ম | ঢাকা জজ কোর্ট</p>
+            </div>
+        </div>
+
+        <h2 class="section-head" id="career" style="margin-top: 80px;">২ ও ৮. ক্যারিয়ার এবং লিগ্যাল এইড</h2>
+        <div class="grid-3">
+            <div class="card">
+                <i class="fas fa-user-tie"></i>
+                <h3>ক্যারিয়ার পোর্টাল</h3>
+                <p>সিনিয়রদের চেম্বারে সরাসরি ইন্টার্নশিপ ও কর্মসংস্থানের সুযোগ।</p>
+                <div style="background: #f0f9ff; padding: 12px; border-radius: 8px; border-left: 4px solid var(--primary); margin-top:15px; font-size: 0.85rem;">
+                    <strong>জুনিয়র প্রয়োজন:</strong> সুপ্রিম কোর্ট চেম্বার
+                </div>
+            </div>
+            <div class="card">
+                <i class="fas fa-hand-holding-heart"></i>
+                <span class="pro-badge">PRO-BONO HERO</span>
+                <h3>লিগ্যাল এইড ব্যাজ</h3>
+                <p>অসহায়দের ফ্রি আইনি সেবা প্রদানকারী আইনজীবীদের বিশেষ সম্মাননা প্যানেল।</p>
+            </div>
+        </div>
+
+        <h2 class="section-head" id="memory" style="margin-top: 80px;">৩ ও ৪. মেমোরি লেন ও ভার্চুয়াল মিউজিয়াম</h2>
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;">
+            <div class="card">
+                <h3>৩. মেমোরি লেন (স্মৃতি আর্কাইভ)</h3>
+                <img src="https://i.ibb.co/F8Loud-object-11.jpg" class="memory-img" alt="SIU Law Court Visit">
+                <p>৪৪ ব্যাচের প্রথম কোর্ট ভিজিট: আমাদের দীর্ঘ যাত্রার একটি ঐতিহাসিক মুহূর্ত।</p>
+            </div>
+            <div class="card" style="background: var(--primary); color: white;">
+                <h3 style="color: var(--accent);">৪. ভার্চুয়াল মিউজিয়াম</h3>
+                <ul style="list-style: none; padding: 0; line-height: 2;">
+                    <li><i class="fas fa-star" style="color:var(--accent);"></i> ২০০৪: প্রথম পথচলা</li>
+                    <li><i class="fas fa-star" style="color:var(--accent);"></i> ২০১০: ১ম সমাবর্তন</li>
+                    <li><i class="fas fa-star" style="color:var(--accent);"></i> ২০২৬: ডিজিটাল লিগ্যাসি</li>
+                </ul>
+                <i class="fas fa-landmark" style="font-size: 6rem; position: absolute; bottom: 20px; right: 20px; opacity: 0.1;"></i>
+            </div>
+        </div>
+
+        <h2 class="section-head" style="margin-top: 80px;">৫, ৬ ও ৭. একাডেমি ও গ্লোবাল নেটওয়ার্ক</h2>
+        <div class="grid-3">
+            <div class="card">
+                <i class="fas fa-comments"></i>
+                <h3>৫. ল ফোরাম</h3>
+                <p>সিনিয়র-জুনিয়র প্রফেশনাল আলোচনা ও আইনি পরামর্শ কেন্দ্র।</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-book"></i>
+                <h3>৬. ই-লাইব্রেরি</h3>
+                <p>সিনিয়রদের হ্যান্ড-নোট ও পিডিএফ রিসার্চ পেপারের ডিজিটাল আর্কাইভ।</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-globe"></i>
+                <h3>৭. গ্লোবাল ম্যাপ</h3>
+                <p>বিশ্বজুড়ে (UK, USA, Canada) আমাদের প্রাক্তন শিক্ষার্থীদের অবস্থান।</p>
+            </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 60px;">
+            <div class="card">
+                <i class="fas fa-edit"></i>
+                <h3>৯. এক্সাম পোর্টাল</h3>
+                <p>বার কাউন্সিল ও জুডিশিয়ারি পরীক্ষার প্রশ্ন ব্যাংক ও কুইজ প্রস্তুতি।</p>
+            </div>
+            <div class="card" style="background: #e8f5e9; border: 2px solid #27ae60;">
+                <i class="fas fa-user-shield" style="color: #27ae60;"></i>
+                <h3>১০. ডিজিটাল আইডি ও সিকিউরিটি</h3>
+                <p>QR কোড এনক্রিপশন ও তথ্যের সর্বোচ্চ সুরক্ষা ব্যবস্থা।</p>
+            </div>
+        </div>
+
+    </div>
+
+    <section id="register" style="text-align: center; padding: 100px 20px; background: white;">
+        <h2 style="color: var(--primary); font-size: 2.5rem;">নতুন সদস্য হিসেবে যুক্ত হোন</h2>
+        <p style="color: #666; margin-bottom: 40px;">আপনার তথ্য ডিরেক্টরিতে যুক্ত করতে আমাদের ভেরিফাইড ফর্মে নিবন্ধন করুন</p>
+        <button style="background: var(--accent); color: var(--primary); padding: 20px 60px; border: none; border-radius: 10px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">রেজিস্ট্রেশন ফর্ম ওপেন করুন</button>
+    </section>
+
+    <footer>
+        <h2>SIU LAW DIGITAL LEGACY</h2>
+        <p>ঐতিহ্যের বন্ধন, শ্রেষ্ঠত্বের পথে</p>
+        <div class="footer-credits">
+            পরিকল্পনায় ও বাস্তবায়নে: <strong>মোহাম্মদ আরিফ</strong><br>
+            স্নাতক ৩৯তম ব্যাচ, আইন বিভাগ, সিলেট ইন্টারন্যাশনাল ইউনিভার্সিটি (SIU)
+        </div>
+    </footer>
+
+    <script>
+        function searchFunction() {
+            let input = document.getElementById('searchInput').value.toUpperCase();
+            let cards = document.getElementsByClassName('lawyer-card');
+            for (let i = 0; i < cards.length; i++) {
+                let text = cards[i].innerText.toUpperCase();
+                cards[i].style.display = text.indexOf(input) > -1 ? "" : "none";
+            }
+        }
+        document.getElementById('searchInput').addEventListener('keyup', searchFunction);
+    </script>
+</body>
+</html>
