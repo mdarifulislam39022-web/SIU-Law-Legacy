@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - SIU Law Legacy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #002147; --accent: #ffd700; --bg: #0f172a; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); color: #fff; padding: 40px; }
+        
+        .admin-table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: 20px; }
+        .admin-table th, .admin-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .admin-table th { background: var(--primary); color: var(--accent); }
+        
+        .approve-btn { background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .approve-btn:hover { background: #219150; }
+        
+        .delete-btn { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-left: 5px; transition: 0.3s; }
+        .delete-btn:hover { background: #c0392b; }
+
+        .empty-msg { text-align: center; padding: 40px; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <h2><i class="fas fa-user-shield"></i> অ্যাডমিন কন্ট্রোল প্যানেল</h2>
+    <p>নতুন আবেদনসমূহ ভেরিফাই করুন:</p>
+    
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>নাম</th>
+                <th>ব্যাচ</th>
+                <th>কর্মস্থল</th>
+                <th>অ্যাকশন</th>
+            </tr>
+        </thead>
+        <tbody id="adminTableBody">
+            <tr>
+                <td colspan="4" class="empty-msg">ডাটা লোড হচ্ছে...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+        // আপনার ফায়ারবেস কনফিগ
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAOY2lbrlTHGnv3zBr6s_PfKZ-ltDPqyY",
+            authDomain: "siu-law-legacy.firebaseapp.com",
+            projectId: "siu-law-legacy",
+            storageBucket: "siu-law-legacy.firebasestorage.app",
+            messagingSenderId: "573101886591",
+            appId: "1:573101886591:web:9c49fa4937e854969bc34a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const adminTableBody = document.getElementById('adminTableBody');
+
+        // শুধুমাত্র 'Pending' মেম্বারদের রিয়েল-টাইমে দেখা
+        const q = query(collection(db, "members"), where("status", "==", "Pending"));
+
+        onSnapshot(q, (snapshot) => {
+            adminTableBody.innerHTML = "";
+            
+            if (snapshot.empty) {
+                adminTableBody.innerHTML = `<tr><td colspan="4" class="empty-msg">কোনো নতুন আবেদন নেই।</td></tr>`;
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const member = docSnap.data();
+                const id = docSnap.id;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${member.name}</td>
+                    <td>${member.batch}তম</td>
+                    <td>${member.workplace}</td>
+                    <td>
+                        <button class="approve-btn" onclick="updateStatus('${id}', 'Verified')">অনুমোদন</button>
+                        <button class="delete-btn" onclick="removeMember('${id}')">বাতিল</button>
+                    </td>
+                `;
+                adminTableBody.appendChild(row);
+            });
+        });
+
+        // স্ট্যাটাস আপডেট (অনুমোদন) করার ফাংশন
+        window.updateStatus = async (id, newStatus) => {
+            try {
+                const memberRef = doc(db, "members", id);
+                await updateDoc(memberRef, { status: newStatus });
+                alert("সদস্য সফলভাবে অনুমোদিত হয়েছে!");
+            } catch (error) {
+                console.error("Error updating status: ", error);
+                alert("অনুমোদন করা সম্ভব হয়নি।");
+            }
+        };
+
+        // ডিলিট করার ফাংশন
+        window.removeMember = async (id) => {
+            if(confirm("আপনি কি নিশ্চিতভাবে এই আবেদনটি মুছে ফেলতে চান?")) {
+                try {
+                    await deleteDoc(doc(db, "members", id));
+                    alert("আবেদনটি মুছে ফেলা হয়েছে।");
+                } catch (error) {
+                    console.error("Error deleting member: ", error);
+                    alert("মুছে ফেলা সম্ভব হয়নি।");
+                }
+            }
+        };
+    </script>
+</body>
+</html>

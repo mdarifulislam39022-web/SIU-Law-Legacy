@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Registration - SIU Law Legacy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #002147; --accent: #ffd700; --bg: #0f172a; }
+        body { margin: 0; font-family: 'Hind Siliguri', sans-serif; background: var(--bg); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        
+        .reg-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; border: 1px solid rgba(255, 215, 0, 0.2); width: 100%; max-width: 550px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        .reg-card h2 { text-align: center; color: var(--accent); margin-bottom: 30px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: white; outline: none; box-sizing: border-box; }
+        .form-group input:focus { border-color: var(--accent); }
+
+        .photo-upload { border: 2px dashed rgba(255,215,0,0.3); padding: 20px; text-align: center; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        .photo-upload:hover { background: rgba(255,215,0,0.05); }
+
+        .submit-btn { width: 100%; background: var(--accent); color: var(--primary); border: none; padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .submit-btn:hover { background: #fff; transform: translateY(-2px); }
+        
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #ccc; text-decoration: none; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <div class="reg-card">
+        <h2><i class="fas fa-user-plus"></i> সদস্যপদ নিবন্ধন</h2>
+        <p style="text-align: center; font-size: 0.8rem; opacity: 0.7; margin-top: -20px; margin-bottom: 30px;">আপনার তথ্য আমাদের ডিজিটাল ডিরেক্টরিতে যুক্ত করুন</p>
+        
+        <form id="regForm">
+            <div class="form-group">
+                <label>পূর্ণ নাম (ইংরেজিতে)</label>
+                <input type="text" id="fullName" placeholder="যেমন: Advocate Mohammad Arif" required>
+            </div>
+
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>ব্যাচ</label>
+                    <select id="batch" required>
+                        <option value="">নির্বাচন করুন</option>
+                        <option value="1">১ম ব্যাচ</option>
+                        <option value="10">১০ম ব্যাচ</option>
+                        <option value="39">৩৯তম ব্যাচ</option>
+                        <option value="44">৪৪তম ব্যাচ</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>রোল নম্বর</label>
+                    <input type="text" id="roll" placeholder="বিভাগের রোল">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>বর্তমান পদবী ও কর্মস্থল</label>
+                <input type="text" id="workplace" placeholder="যেমন: অ্যাডভোকেট, মৌলভীবাজার জজ কোর্ট" required>
+            </div>
+
+            <div class="form-group">
+                <label>প্রোফাইল ছবি</label>
+                <div class="photo-upload" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--accent);"></i>
+                    <p style="font-size: 0.8rem;">ক্লিক করে ছবি আপলোড করুন</p>
+                    <input type="file" style="display: none;" id="fileInput">
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">নিবন্ধন সম্পন্ন করুন</button>
+        </form>
+
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> হোমে ফিরে যান</a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+        // আপনার প্রোভাইড করা কনফিগ
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAOY2lbrlTHGnv3zBr6s_PfKZ-ltDPqyY",
+            authDomain: "siu-law-legacy.firebaseapp.com",
+            projectId: "siu-law-legacy",
+            storageBucket: "siu-law-legacy.firebasestorage.app",
+            messagingSenderId: "573101886591",
+            appId: "1:573101886591:web:9c49fa4937e854969bc34a"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Form Submit Handler
+        document.getElementById('regForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "প্রসেসিং হচ্ছে...";
+            btn.disabled = true;
+
+            const userData = {
+                name: document.getElementById('fullName').value,
+                batch: document.getElementById('batch').value,
+                roll: document.getElementById('roll').value,
+                workplace: document.getElementById('workplace').value,
+                status: "Pending", // শুরুতে পেন্ডিং থাকবে
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                // 'members' কালেকশনে ডাটা সেভ হবে
+                await addDoc(collection(db, "members"), userData);
+                alert('ধন্যবাদ! আপনার তথ্যটি যাচাইয়ের জন্য কর্তৃপক্ষের কাছে পাঠানো হয়েছে।');
+                document.getElementById('regForm').reset();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert('দুঃখিত, তথ্য সেভ করা যায়নি। আপনার ইন্টারনেটের কানেকশন এবং ফায়ারবেস রুলস চেক করুন।');
+            } finally {
+                btn.innerText = "নিবন্ধন সম্পন্ন করুন";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory - SIU Law Legacy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #002147; --accent: #ffd700; --bg: #0f172a; }
+        body { margin: 0; font-family: 'Hind Siliguri', sans-serif; background: var(--bg); color: #fff; padding-top: 80px; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        
+        .member-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.1); transition: 0.3s; }
+        .member-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        
+        .badge { background: #27ae60; color: white; font-size: 0.7rem; padding: 3px 10px; border-radius: 50px; float: right; }
+        .member-card h3 { color: var(--accent); margin: 10px 0; }
+        .member-card p { font-size: 0.9rem; opacity: 0.8; margin: 5px 0; }
+        
+        .search-bar { width: 100%; padding: 15px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; margin-bottom: 40px; outline: none; border: 1px solid transparent; transition: 0.3s; }
+        .search-bar:focus { border-color: var(--accent); }
+
+        .no-result { text-align: center; grid-column: 1 / -1; opacity: 0.6; padding: 40px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="margin-bottom: 10px;"><i class="fas fa-users"></i> আইনি পেশাজীবী ডিরেক্টরি</h2>
+        <p style="margin-bottom: 30px; opacity: 0.7;">সিলেট ইন্টারন্যাশনাল ইউনিভার্সিটি আইন বিভাগের ভেরিফাইড সদস্যবৃন্দ</p>
+        
+        <input type="text" id="searchInput" class="search-bar" placeholder="নাম বা ব্যাচ লিখে সার্চ করুন...">
+        
+        <div class="grid" id="directoryGrid">
+            <p class="no-result">সদস্যদের তথ্য লোড হচ্ছে...</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+        // আপনার ফায়ারবেস কনফিগ
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAOY2lbrlTHGnv3zBr6s_PfKZ-ltDPqyY",
+            authDomain: "siu-law-legacy.firebaseapp.com",
+            projectId: "siu-law-legacy",
+            storageBucket: "siu-law-legacy.firebasestorage.app",
+            messagingSenderId: "573101886591",
+            appId: "1:573101886591:web:9c49fa4937e854969bc34a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const directoryGrid = document.getElementById('directoryGrid');
+        const searchInput = document.getElementById('searchInput');
+
+        let allMembers = []; // সার্চের জন্য ডাটা স্টোর করার জায়গা
+
+        // ডাটাবেস থেকে রিয়েল-টাইম ডাটা আনা
+        const q = query(collection(db, "members"), where("status", "==", "Verified"));
+
+        onSnapshot(q, (snapshot) => {
+            allMembers = [];
+            snapshot.forEach((doc) => {
+                allMembers.push(doc.data());
+            });
+            renderDirectory(allMembers);
+        });
+
+        // ডিরেক্টরি রেন্ডার করার ফাংশন
+        function renderDirectory(data) {
+            directoryGrid.innerHTML = "";
+            if (data.length === 0) {
+                directoryGrid.innerHTML = '<p class="no-result">কোনো সদস্য পাওয়া যায়নি।</p>';
+                return;
+            }
+            
+            data.forEach((member) => {
+                directoryGrid.innerHTML += `
+                    <div class="member-card">
+                        <span class="badge">VERIFIED</span>
+                        <h3>${member.name}</h3>
+                        <p><strong>ব্যাচ:</strong> ${member.batch}তম</p>
+                        <p><i class="fas fa-university"></i> ${member.workplace}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // সার্চ ফাংশনালিটি
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allMembers.filter(member => 
+                member.name.toLowerCase().includes(term) || 
+                member.batch.toString().includes(term)
+            );
+            renderDirectory(filtered);
+        });
+    </script>
+</body>
+</html>
